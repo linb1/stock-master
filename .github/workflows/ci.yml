@@ -1,9 +1,13 @@
 name: CI
 
 on:
+  push:
+    branches-ignore:
+      - main
   pull_request:
     branches:
-      - main
+      - '**'  # Triggers on all branches for pull requests
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   build:
@@ -16,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '20'  # Explicitly specify Node.js 20
 
       - name: Install dependencies
         working-directory: client
