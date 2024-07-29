@@ -1,4 +1,3 @@
-"use client";
 // when using an event handler (i.e onClick), need use client or else it will error
 // testing ci
 import { Bell, Menu, Settings, Sun } from "lucide-react";
@@ -16,7 +15,6 @@ const Navbar = () => {
         >
           <Menu className="w-4 h-4" />
         </button>
-
         <div className="relative">
           <input
             type="search"
