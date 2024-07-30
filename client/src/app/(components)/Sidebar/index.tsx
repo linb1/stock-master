@@ -41,7 +41,7 @@ const SidebarLink = ({
           isActive ? "bg-blue-200 text-white" : ""
         }`}
       >
-        <Icon className="w-6 h-6 !text-gray-700" />
+        <Icon className="w-6 h-6 !text-gray-700 flex-shrink-0" />
         <span
           className={`${
             isCollapsed ? "hidden" : "block"
