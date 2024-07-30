@@ -44,6 +44,7 @@ const storage =
     : createWebStorage("local");
 
 const persistConfig = {
+  timeout: 500, // set higher or lower to change load times, might increase/remove if it affects rehydration
   key: "root",
   storage,
   whitelist: ["global"],
