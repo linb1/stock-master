@@ -29,7 +29,7 @@ model Users {
  }
 
 model Sales {
-  salesId String @id
+  saleId String @id
   productId String
   timestamp DateTime
   quantity Int
