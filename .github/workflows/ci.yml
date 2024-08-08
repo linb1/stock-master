@@ -33,3 +33,32 @@ jobs:
       - name: Lint code
         working-directory: client
         run: npm run lint
+        
+  express-server:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Specify the Node.js version you are using
+
+      - name: Install server dependencies
+        run: npm install
+        working-directory: ./server # Change to your Express server directory
+
+      - name: Run Prisma migrations
+        run: npx prisma migrate deploy
+        working-directory: ./server # Change to your Express server directory
+
+      - name: Build server
+        run: npm run build
+        working-directory: ./server # Change to your Express server directory
+
+      - name: Test server
+        run: npm test
+        working-directory: ./server # Change to your Express server directory
