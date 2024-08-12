@@ -1,20 +1,29 @@
 import { useGetDashboardMetricsQuery } from "@/state/api";
 import { TrendingUp } from "lucide-react";
 import React, { useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const CardSalesSummary = () => {
   const { data, isLoading, isError } = useGetDashboardMetricsQuery();
-  const saleData = data?.salesSummary || [];
+  const salesData = data?.salesSummary || [];
 
   const [timeframe, setTimeframe] = useState("weekly");
 
   const totalValueSum =
-    saleData.reduce((acc, curr) => acc + curr.totalValue, 0) || 0;
-  console.log(saleData);
+    salesData.reduce((acc, curr) => acc + curr.totalValue, 0) || 0;
+  console.log(salesData);
 
   //underscore because we don't need index
   const averageChangePercentage =
-    saleData.reduce((acc, curr, _, array) => {
+    salesData.reduce((acc, curr, _, array) => {
       return acc + curr.changePercentage! / array.length;
     }, 0) || 0;
 
@@ -22,6 +31,17 @@ const CardSalesSummary = () => {
     return <div className="m-5">Failed to fetch data</div>;
   }
 
+  const highestValueData = salesData.reduce((acc, curr) => {
+    return acc.totalValue > curr.totalValue ? acc : curr;
+  }, salesData[0] || {});
+
+  const highestValueDate = highestValueData.date
+    ? new Date(highestValueData.date).toLocaleDateString("en-US", {
+        month: "numeric",
+        day: "numeric",
+        year: "2-digit",
+      })
+    : "N/A";
   return (
     <div className="row-span-3 xl:row-span-6 bg-white shadow-md rounded-2xl flex flex-col justify-between">
       {isLoading ? (
@@ -64,6 +84,52 @@ const CardSalesSummary = () => {
                 <option value={"weekly"}>Weekly</option>
                 <option value={"monthly"}>Monthly</option>
               </select>
+            </div>
+            {/* Chart */}
+            <ResponsiveContainer width="100%" height={350} className="px-7">
+              <BarChart
+                data={salesData}
+                margin={{ top: 0, right: 0, left: -25, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="" vertical={false} />
+                <XAxis
+                  dataKey="date"
+                  tickFormatter={(value) => {
+                    const date = new Date(value);
+                    return `${date.getMonth() + 1}/${date.getDate()}`;
+                  }}
+                />
+                <YAxis
+                  tickFormatter={(value) => {
+                    return `${(value / 1000000).toFixed(0)}m`;
+                  }}
+                  tick={{ fontSize: 12, dx: -1 }}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <Tooltip
+                  formatter={(value: number) => [
+                    `$${value.toLocaleString("en")}`,
+                  ]}
+                />
+                <Bar
+                  dataKey="totalValue"
+                  fill="#3182ce"
+                  barSize={10}
+                  radius={[10, 10, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          {/* Footer */}
+          <div>
+            <hr />
+            <div className="flex justify-between items-center mt-6 text-sm px-7 mb-4">
+              <p>{salesData.length || 0} days</p>
+              <p className="text-sm">
+                Highest Sales Date:{" "}
+                <span className="font-bold">{highestValueDate}</span>
+              </p>
             </div>
           </div>
         </>
