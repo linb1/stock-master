@@ -1,10 +1,37 @@
-import { useGetDashboardMetricsQuery } from "@/state/api";
+import {
+  ExpenseByCategorySummary,
+  useGetDashboardMetricsQuery,
+} from "@/state/api";
 import React from "react";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+
+type ExpenseSums = {
+  [category: string]: number;
+};
 
 const colors = ["#00C49F", "0088FE", "FFBB28"];
 
 const CardExpenseSummary = () => {
   const { data: dashboardMetrics, isLoading } = useGetDashboardMetricsQuery();
+
+  const expenseByCategorySummary =
+    dashboardMetrics?.expenseByCategorySummary || [];
+
+  const expenseSums = expenseByCategorySummary.reduce(
+    (acc: ExpenseSums, item: ExpenseByCategorySummary) => {
+      const category = item.category + " Expenses";
+      const amount = parseInt(item.amount, 10);
+      if (!acc[category]) acc[category] = 0;
+      acc[category] += amount;
+      return acc;
+    },
+    {}
+  );
+
+  const expenseCategories = Object.entries(expenseSums).map(
+    ([name, value]) => ({ name, value })
+  );
+
   return (
     <div className="row-span-3 bg-white shadow-md rounded-2xl flex flex-col justify-between">
       {isLoading ? (
@@ -17,6 +44,33 @@ const CardExpenseSummary = () => {
               Expense Summary
             </h2>
             <hr />
+          </div>
+          {/* Body */}
+          <div className="xl:flex justify-between pr-7">
+            {/* Chart */}
+            <div className="relative basis-3/5">
+              <ResponsiveContainer width="100%" height={140}>
+                <PieChart>
+                  <Pie
+                    data={expenseCategories}
+                    innerRadius={50}
+                    outerRadius={50}
+                    fill="#8884d8"
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                  >
+                    {expenseCategories.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={colors[index % colors.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </>
       )}
