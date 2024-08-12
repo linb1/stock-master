@@ -19,7 +19,6 @@ const CardSalesSummary = () => {
 
   const totalValueSum =
     salesData.reduce((acc, curr) => acc + curr.totalValue, 0) || 0;
-  console.log(salesData);
 
   //underscore because we don't need index
   const averageChangePercentage =
