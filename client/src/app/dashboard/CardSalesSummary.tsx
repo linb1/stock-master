@@ -52,12 +52,13 @@ const CardSalesSummary = () => {
             <h2 className="text-lg font-semibold mb-2 px-7 pt-5">
               Sales Summary
             </h2>
+            <hr />
           </div>
 
           {/* Body */}
           <div>
             {/* Body Header */}
-            <div className="flex justify-between items-center mb-6 px-7">
+            <div className="flex justify-between items-center mb-6 px-7 mt-5">
               <div className="text-lg font-medium">
                 <p className="text-xs text-gray-400">Value</p>
                 <span className="text-2xl font-extrabold">
