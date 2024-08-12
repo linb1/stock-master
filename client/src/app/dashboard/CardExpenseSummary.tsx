@@ -9,7 +9,7 @@ type ExpenseSums = {
   [category: string]: number;
 };
 
-const colors = ["#00C49F", "0088FE", "FFBB28"];
+const colors = ["#00C49F", "#0088FE", "#FFBB28"];
 
 const CardExpenseSummary = () => {
   const { data: dashboardMetrics, isLoading } = useGetDashboardMetricsQuery();
