@@ -59,7 +59,6 @@ const CardPurchaseSummary = () => {
               </div>
             </div>
             {/* Chart */}
-            {/* Todo: fix rendering out of box */}
             <ResponsiveContainer width="100%" height={200} className="p-2">
               <AreaChart
                 data={purchaseData}
