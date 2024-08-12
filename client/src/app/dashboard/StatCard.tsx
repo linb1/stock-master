@@ -49,21 +49,26 @@ const StatCard = ({
             <React.Fragment key={index}>
               <div className="flex items-center justify-between my-4">
                 <span className="text-gray-500">{detail.title}</span>
-                <span className="font-bold text-gray-800">{detail.amount}</span>
-                <div className="flex items-center">
-                  <detail.IconComponent
-                    className={`w-4 h-4 mr-1 ${getChangedColor(
-                      detail.changePercentage
-                    )}`}
-                  />
-
-                  <span
-                    className={`font-medium ${getChangedColor(
-                      detail.changePercentage
-                    )}`}
-                  >
-                    {formatPercentage(detail.changePercentage)}
+                {/* diff: create new div for better text alignment */}
+                <div className="flex items-center w-1/2 justify-between">
+                  <span className="font-bold text-gray-800">
+                    {detail.amount}
                   </span>
+                  <div className="flex items-center">
+                    <detail.IconComponent
+                      className={`w-4 h-4 mr-1 ${getChangedColor(
+                        detail.changePercentage
+                      )}`}
+                    />
+
+                    <span
+                      className={`font-medium ${getChangedColor(
+                        detail.changePercentage
+                      )}`}
+                    >
+                      {formatPercentage(detail.changePercentage)}
+                    </span>
+                  </div>
                 </div>
               </div>
               {index < details.length - 1 && <hr />}
